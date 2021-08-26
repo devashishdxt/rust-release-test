@@ -37,4 +37,4 @@ jobs:
           cp ./target/release/rust-release-test.exe ./release/rust-release-test-ubuntu-latest.exe
       - uses: softprops/action-gh-release@v1
         with:
-          files: ./target/release/*
+          files: ./release/*
