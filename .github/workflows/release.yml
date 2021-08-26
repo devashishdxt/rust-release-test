@@ -25,19 +25,22 @@ jobs:
           args: --release
       - if: matrix.os == 'ubuntu-latest'
         run: |
-          mkdir -p release/${{ matrix.os }}
+          mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -czvf ${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          rm -r ./release/${{ matrix.os }}
       - if: matrix.os == 'macos-latest'
         run: |
-          mkdir -p release/${{ matrix.os }}
+          mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -czvf ${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          rm -r ./release/${{ matrix.os }}
       - if: matrix.os == 'windows-latest'
         run: |
-          mkdir -p release/${{ matrix.os }}
+          mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test.exe ./release/${{ matrix.os }}/
-          tar -czvf ${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          rm -r ./release/${{ matrix.os }}
       - uses: softprops/action-gh-release@v1
         with:
           files: ./release/*
