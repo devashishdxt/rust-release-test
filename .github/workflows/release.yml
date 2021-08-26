@@ -35,17 +35,17 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${{ steps.get_version.outputs.version }}.tar.gz .
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-${{ steps.get_version.outputs.version }}.tar.gz .
       - name: Prepare release on macos
         if: matrix.os == 'macos-latest'
         run: |
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${{ steps.get_version.outputs.version }}.tar.gz .
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-${{ steps.get_version.outputs.version }}.tar.gz .
       - name: Prepare release on windows
         if: matrix.os == 'windows-latest'
         run: |
           cp ./target/release/rust-release-test.exe ./release/${{ matrix.os }}/
-          Compress-Archive -Path ./release/${{ matrix.os }}/* -DestinationPath ./release/${{ matrix.os }}-x86_64-${{ steps.get_version.outputs.version }}.zip
+          Compress-Archive -Path ./release/${{ matrix.os }}/* -DestinationPath ./release/${{ matrix.os }}-${{ steps.get_version.outputs.version }}.zip
       - name: Cleanup
         run: rm -r ./release/${{ matrix.os }}
       - name: Publish release assets
