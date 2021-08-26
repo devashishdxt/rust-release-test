@@ -27,19 +27,19 @@ jobs:
         run: |
           mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}/*
           rm -r ./release/${{ matrix.os }}
       - if: matrix.os == 'macos-latest'
         run: |
           mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
+          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}/*
           rm -r ./release/${{ matrix.os }}
       - if: matrix.os == 'windows-latest'
         run: |
           mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test.exe ./release/${{ matrix.os }}/
-          Compress-Archive -LiteralPath ./release/${{ matrix.os }} -DestinationPath ./release/${{ matrix.os }}.zip
+          Compress-Archive -Path ./release/${{ matrix.os }}/* -DestinationPath ./release/${{ matrix.os }}.zip
           rm -r ./release/${{ matrix.os }}
       - uses: softprops/action-gh-release@v1
         with:
