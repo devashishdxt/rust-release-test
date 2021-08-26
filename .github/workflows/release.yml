@@ -13,30 +13,42 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: actions-rs/cargo@v1
+      - name: Build
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release
-      - run: mkdir -p ./release/${{ matrix.os }}
-      - if: matrix.os == 'ubuntu-latest'
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=SOURCE_VERSION::${GITHUB_REF#refs/tags/}
+      - name: Make release folder
+        run: mkdir -p ./release/${{ matrix.os }}
+      - name: Prepare release on ubuntu
+        if: matrix.os == 'ubuntu-latest'
         run: |
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${GITHUB_REF#refs/tags/}.tar.gz .
-      - if: matrix.os == 'macos-latest'
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${{ steps.get_version.outputs.SOURCE_VERSION }}.tar.gz .
+      - name: Prepare release on macos
+        if: matrix.os == 'macos-latest'
         run: |
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${GITHUB_REF#refs/tags/}.tar.gz .
-      - if: matrix.os == 'windows-latest'
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${{ steps.get_version.outputs.SOURCE_VERSION }}.tar.gz .
+      - name: Prepare release on windows
+        if: matrix.os == 'windows-latest'
         run: |
           cp ./target/release/rust-release-test.exe ./release/${{ matrix.os }}/
-          Compress-Archive -Path ./release/${{ matrix.os }}/* -DestinationPath ./release/${{ matrix.os }}-x86_64-${GITHUB_REF#refs/tags/}.zip
-      - run: rm -r ./release/${{ matrix.os }}
-      - uses: softprops/action-gh-release@v1
+          Compress-Archive -Path ./release/${{ matrix.os }}/* -DestinationPath ./release/${{ matrix.os }}-x86_64-${{ steps.get_version.outputs.SOURCE_VERSION }}.zip
+      - name: Cleanup
+        run: rm -r ./release/${{ matrix.os }}
+      - name: Publish release assets
+        uses: softprops/action-gh-release@v1
         with:
           files: ./release/*
