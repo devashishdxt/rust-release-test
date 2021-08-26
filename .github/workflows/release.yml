@@ -25,16 +25,19 @@ jobs:
           args: --release
       - if: matrix.os == 'ubuntu-latest'
         run: |
-          mkdir release
-          cp ./target/release/rust-release-test ./release/rust-release-test-ubuntu-latest
+          mkdir -p release/${{ matrix.os }}
+          cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
+          tar -czvf ${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
       - if: matrix.os == 'macos-latest'
         run: |
-          mkdir release
-          cp ./target/release/rust-release-test ./release/rust-release-test-macos-latest
+          mkdir -p release/${{ matrix.os }}
+          cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
+          tar -czvf ${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
       - if: matrix.os == 'windows-latest'
         run: |
-          mkdir release
-          cp ./target/release/rust-release-test.exe ./release/rust-release-test-ubuntu-latest.exe
+          mkdir -p release/${{ matrix.os }}
+          cp ./target/release/rust-release-test.exe ./release/${{ matrix.os }}/
+          tar -czvf ${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}
       - uses: softprops/action-gh-release@v1
         with:
           files: ./release/*
