@@ -27,15 +27,15 @@ jobs:
       - if: matrix.os == 'ubuntu-latest'
         run: |
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64.tar.gz .
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${{ github.ref }}.tar.gz .
       - if: matrix.os == 'macos-latest'
         run: |
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64.tar.gz .
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}-x86_64-${{ github.ref }}.tar.gz .
       - if: matrix.os == 'windows-latest'
         run: |
           cp ./target/release/rust-release-test.exe ./release/${{ matrix.os }}/
-          Compress-Archive -Path ./release/${{ matrix.os }}/* -DestinationPath ./release/${{ matrix.os }}-x86_64.zip
+          Compress-Archive -Path ./release/${{ matrix.os }}/* -DestinationPath ./release/${{ matrix.os }}-x86_64-${{ github.ref }}.zip
       - run: rm -r ./release/${{ matrix.os }}
       - uses: softprops/action-gh-release@v1
         with:
