@@ -27,13 +27,13 @@ jobs:
         run: |
           mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}/*
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}.tar.gz ./*
           rm -r ./release/${{ matrix.os }}
       - if: matrix.os == 'macos-latest'
         run: |
           mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test ./release/${{ matrix.os }}/
-          tar -czvf ./release/${{ matrix.os }}.tar.gz ./release/${{ matrix.os }}/*
+          tar -C ./release/${{ matrix.os }}/ -czvf ./release/${{ matrix.os }}.tar.gz ./*
           rm -r ./release/${{ matrix.os }}
       - if: matrix.os == 'windows-latest'
         run: |
