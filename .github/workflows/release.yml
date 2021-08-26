@@ -39,7 +39,7 @@ jobs:
         run: |
           mkdir -p ./release/${{ matrix.os }}
           cp ./target/release/rust-release-test.exe ./release/${{ matrix.os }}/
-          zip -r ./release/${{ matrix.os }}.zip ./release/${{ matrix.os }}
+          Compress-Archive -LiteralPath ./release/${{ matrix.os }} -DestinationPath ./release/${{ matrix.os }}.zip
           rm -r ./release/${{ matrix.os }}
       - uses: softprops/action-gh-release@v1
         with:
